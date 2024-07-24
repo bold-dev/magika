@@ -161,10 +161,6 @@ impl FileType {
             let inferred = InferredType { content_type: label.content_type(), score: scores[best] };
             let config = &crate::model::CONFIG;
             let mut overwrite = config.overwrite_map[inferred.content_type as usize];
-            eprintln!(
-                "threshold: {:?} {}",
-                inferred.content_type, config.thresholds[overwrite as usize]
-            );
             if inferred.score < config.thresholds[overwrite as usize] {
                 overwrite =
                     if overwrite.info().is_text { ContentType::Txt } else { ContentType::Unknown };
