@@ -66,7 +66,9 @@ impl Builder {
         if let Some(parallel_execution) = parallel_execution {
             session = session.with_parallel_execution(parallel_execution)?;
         }
-        let session = session.commit_from_memory(include_bytes!("model.onnx"))?;
+        let session = session.commit_from_memory(include_bytes!(
+            "../../../python/magika/models/standard_v1/model.onnx"
+        ))?;
         Ok(Session { session })
     }
 }
