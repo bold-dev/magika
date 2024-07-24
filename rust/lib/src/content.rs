@@ -18,7 +18,7 @@
 use crate::file::TypeInfo;
 
 /// Model name (only comparable with equality).
-pub const MODEL_NAME: &str = "draft_standard_v2";
+pub const MODEL_NAME: &str = "standard_v1";
 
 pub(crate) static _3GP: TypeInfo = TypeInfo {
     label: "3gp",
@@ -1073,6 +1073,15 @@ pub(crate) static OCAML: TypeInfo = TypeInfo {
     is_text: true,
 };
 
+pub(crate) static ODEX: TypeInfo = TypeInfo {
+    label: "odex",
+    mime_type: "application/x-executable-elf",
+    group: "executable",
+    description: "ODEX ELF executable",
+    extensions: &["odex"],
+    is_text: false,
+};
+
 pub(crate) static ODP: TypeInfo = TypeInfo {
     label: "odp",
     mime_type: "application/vnd.oasis.opendocument.presentation",
@@ -1593,6 +1602,15 @@ pub(crate) static SYMLINK: TypeInfo = TypeInfo {
     description: "Symbolic link",
     extensions: &[],
     is_text: false,
+};
+
+pub(crate) static SYMLINKTEXT: TypeInfo = TypeInfo {
+    label: "symlinktext",
+    mime_type: "text/plain",
+    group: "application",
+    description: "Symbolic link (textual representation)",
+    extensions: &[],
+    is_text: true,
 };
 
 pub(crate) static TAR: TypeInfo = TypeInfo {
@@ -2200,6 +2218,8 @@ pub enum ContentType {
     Objectivec,
     /// OCaml
     Ocaml,
+    /// ODEX ELF executable
+    Odex,
     /// OpenDocument Presentation
     Odp,
     /// OpenDocument Spreadsheet
@@ -2314,6 +2334,8 @@ pub enum ContentType {
     Swf,
     /// Swift
     Swift,
+    /// Symbolic link (textual representation)
+    Symlinktext,
     /// POSIX tar archive
     Tar,
     /// Tickle
@@ -2399,7 +2421,7 @@ pub enum ContentType {
 }
 
 impl ContentType {
-    pub(crate) const SIZE: usize = 214;
+    pub(crate) const SIZE: usize = 216;
 
     /// Returns the content type information.
     pub fn info(self) -> &'static TypeInfo {
@@ -2520,6 +2542,7 @@ impl ContentType {
             ContentType::Nupkg => &NUPKG,
             ContentType::Objectivec => &OBJECTIVEC,
             ContentType::Ocaml => &OCAML,
+            ContentType::Odex => &ODEX,
             ContentType::Odp => &ODP,
             ContentType::Ods => &ODS,
             ContentType::Odt => &ODT,
@@ -2577,6 +2600,7 @@ impl ContentType {
             ContentType::Svg => &SVG,
             ContentType::Swf => &SWF,
             ContentType::Swift => &SWIFT,
+            ContentType::Symlinktext => &SYMLINKTEXT,
             ContentType::Tar => &TAR,
             ContentType::Tcl => &TCL,
             ContentType::Textproto => &TEXTPROTO,

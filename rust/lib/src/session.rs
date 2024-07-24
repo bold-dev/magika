@@ -111,10 +111,9 @@ impl Session {
             return Ok(Vec::new());
         }
         let features_size = crate::model::CONFIG.features_size();
-        let input = Array2::from_shape_vec(
-            [features.len(), features_size],
-            features.iter().flat_map(|x| &x.0).cloned().collect(),
-        )?;
+        let v: Vec<i32> = features.iter().flat_map(|x| &x.0).cloned().collect();
+        let v: Vec<f32> = v.iter().map(|x| *x as f32).collect();
+        let input = Array2::from_shape_vec([features.len(), features_size], v)?;
         let mut output = E::ort_session_run(&self.session, input).await?;
         let output = output.remove("target_label").unwrap();
         let output = output.try_extract_tensor()?;
