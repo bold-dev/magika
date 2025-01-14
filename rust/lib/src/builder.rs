@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use ort::execution_providers::ExecutionProviderDispatch;
 use ort::session::builder::GraphOptimizationLevel;
 
 use crate::{Result, Session};
@@ -23,6 +24,7 @@ pub struct Builder {
     intra_threads: Option<usize>,
     optimization_level: Option<GraphOptimizationLevel>,
     parallel_execution: Option<bool>,
+    execution_providers: Option<Vec<ExecutionProviderDispatch>>,
 }
 
 impl Builder {
@@ -49,11 +51,24 @@ impl Builder {
         self.parallel_execution = Some(parallel_execution);
         self
     }
+    /// Configures the session execution providers.
+    pub fn with_execution_providers(
+        mut self, execution_providers: Vec<ExecutionProviderDispatch>,
+    ) -> Self {
+        self.execution_providers = Some(execution_providers);
+        self
+    }
 
     /// Consumes the builder to create a Magika session.
     pub fn build(self) -> Result<Session> {
         let mut session = ort::session::Session::builder()?;
-        let Builder { inter_threads, intra_threads, optimization_level, parallel_execution } = self;
+        let Builder {
+            inter_threads,
+            intra_threads,
+            optimization_level,
+            parallel_execution,
+            execution_providers,
+        } = self;
         if let Some(num_threads) = inter_threads {
             session = session.with_inter_threads(num_threads)?;
         }
@@ -65,6 +80,9 @@ impl Builder {
         }
         if let Some(parallel_execution) = parallel_execution {
             session = session.with_parallel_execution(parallel_execution)?;
+        }
+        if let Some(execution_providers) = execution_providers {
+            session = session.with_execution_providers(execution_providers)?;
         }
         let session = session
             .commit_from_memory(include_bytes!("../../../assets/models/fast_v2_1/model.onnx"))?;
