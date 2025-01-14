@@ -53,9 +53,9 @@ impl Builder {
     }
     /// Configures the session execution providers.
     pub fn with_execution_providers(
-        mut self, execution_providers: Vec<ExecutionProviderDispatch>,
+        mut self, execution_providers: impl IntoIterator<Item = ExecutionProviderDispatch>,
     ) -> Self {
-        self.execution_providers = Some(execution_providers);
+        self.execution_providers = Some(execution_providers.into_iter().collect());
         self
     }
 
