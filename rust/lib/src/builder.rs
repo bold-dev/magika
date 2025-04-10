@@ -66,7 +66,9 @@ impl Builder {
         if let Some(parallel_execution) = parallel_execution {
             session = session.with_parallel_execution(parallel_execution)?;
         }
-        let session = session.commit_from_memory(include_bytes!("model.onnx"))?;
+        let session = session.commit_from_memory(include_bytes!(
+            "../../../assets/models/standard_v3_2/model.onnx"
+        ))?;
         Ok(Session { session })
     }
 }
